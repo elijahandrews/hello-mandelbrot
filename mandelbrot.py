@@ -1,8 +1,8 @@
 from PIL import Image
 
-N_MAX = 100
+N_MAX = 255
 
-IMAGE_HEIGHT = 200
+IMAGE_HEIGHT = 600
 IMAGE_WIDTH = int(IMAGE_HEIGHT * 3.5/2.0)
 
 # Maps a pixel co-ordinates to a complex number
@@ -14,14 +14,14 @@ def pixel_to_complex(x, y):
 
 im = Image.new("RGB", (IMAGE_WIDTH, IMAGE_HEIGHT), "white")
 
-for i in xrange(IMAGE_WIDTH):
-    for j in xrange(IMAGE_HEIGHT):
+for j in xrange(IMAGE_HEIGHT):
+    for i in xrange(IMAGE_WIDTH):
         c = pixel_to_complex(i, j)
         z = c
-        for _ in xrange(N_MAX):
+        for n in xrange(N_MAX):
             z = z**2 + c
             if abs(z) > 2:
-                im.putpixel((i, j), (0, 0, 0))
+                im.putpixel((i, j), (0,) * 3)
                 break
 
 
