@@ -1,8 +1,12 @@
+import math
+
 from PIL import Image
+from progress.bar import Bar
 
-N_MAX = 255
 
-IMAGE_HEIGHT = 600
+N_MAX = 100
+
+IMAGE_HEIGHT = 20000
 IMAGE_WIDTH = int(IMAGE_HEIGHT * 3.5/2.0)
 
 # Maps a pixel co-ordinates to a complex number
@@ -14,6 +18,8 @@ def pixel_to_complex(x, y):
 
 im = Image.new("RGB", (IMAGE_WIDTH, IMAGE_HEIGHT), "white")
 
+bar = Bar('Processing', max=IMAGE_HEIGHT)
+
 for j in xrange(IMAGE_HEIGHT):
     for i in xrange(IMAGE_WIDTH):
         c = pixel_to_complex(i, j)
@@ -21,8 +27,14 @@ for j in xrange(IMAGE_HEIGHT):
         for n in xrange(N_MAX):
             z = z**2 + c
             if abs(z) > 2:
-                im.putpixel((i, j), (0,) * 3)
+                # smooth from http://stackoverflow.com/a/1243788
+                smooth_color = (n + 1 - math.log(math.log(abs(z)))/math.log(2)) / N_MAX
+
+                im.putpixel((i, j), (int(smooth_color * 255.0),) * 3)
                 break
+    bar.next()
 
+bar.finish()
 
+im.save("output.png")
 im.show()
