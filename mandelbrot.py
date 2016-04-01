@@ -1,12 +1,14 @@
 import math
 
+from lib.colorsys import hsv_to_rgb
+
 from PIL import Image
 from progress.bar import Bar
 
 
-N_MAX = 100
+N_MAX = 300
 
-IMAGE_HEIGHT = 20000
+IMAGE_HEIGHT = 30000
 IMAGE_WIDTH = int(IMAGE_HEIGHT * 3.5/2.0)
 
 # Maps a pixel co-ordinates to a complex number
@@ -15,8 +17,7 @@ def pixel_to_complex(x, y):
     imaginary = 2.0 * y / IMAGE_HEIGHT - 1.0  # -1 to 1
     return complex(real, imaginary)
 
-
-im = Image.new("RGB", (IMAGE_WIDTH, IMAGE_HEIGHT), "white")
+im = Image.new("RGB", (IMAGE_WIDTH, IMAGE_HEIGHT), "black")
 
 bar = Bar('Processing', max=IMAGE_HEIGHT)
 
@@ -30,7 +31,9 @@ for j in xrange(IMAGE_HEIGHT):
                 # smooth from http://stackoverflow.com/a/1243788
                 smooth_color = (n + 1 - math.log(math.log(abs(z)))/math.log(2)) / N_MAX
 
-                im.putpixel((i, j), (int(smooth_color * 255.0),) * 3)
+                r, g, b = hsv_to_rgb(smooth_color, 0.5, 0.5)
+
+                im.putpixel((i, j), (int(r * 255), int(g * 255), int(b * 255)))
                 break
     bar.next()
 
