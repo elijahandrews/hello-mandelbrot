@@ -28,8 +28,16 @@ pip install -r requirements.txt
 python mandelbrot.py --height 500 --nmax 80
 ```
 
-## OpenCL implementation (planned)
+## OpenCL implementation (in progress)
 
-Going to start working on this soon. I'm going to take my naive Python 2
-implementation and reimplement it in OpenCL, which will allow me to parallelize
-the problem. I'll likely then start performing optimizations on this version.
+I'm taking my naive Python 2 implementation and reimplement it in OpenCL,
+which will allow me to parallelize the problem. I'll likely then start
+performing optimizations on this version.
+
+### Dependencies
+- clang
+- libpng
+- png++
+
+I'm developing on OS X 10.11, targeting my mid-2015 MacBook Pro's AMD Radeon R9
+M370X GPU.
