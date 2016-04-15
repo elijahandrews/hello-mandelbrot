@@ -4,6 +4,7 @@ INCLUDES = $(shell libpng-config --cflags)
 INCLUDES += $(shell libpng-config --ldflags)
 
 CXXFLAGS = -std=c++14 $(INCLUDES)
+CXXFLAGS += -framework OpenCL  # not portable; -lOpenCL for linux
 
 defaut: all
 
